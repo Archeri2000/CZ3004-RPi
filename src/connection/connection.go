@@ -1,21 +1,15 @@
-package cz3004
+package connection
 
-// Message is a concrete message type
-type Message struct {
-	b []byte
-}
+import (
+	"CZ3004-RPi/src/message"
+	"net"
+)
 
-// Connection is an abstract interface representing the possible conncetion
+// Connection is an abstract interface representing the possible connection force clients to implement a connection interface; send/rx is for multiplexing with other goroutines
 type Connection interface {
-	Send([]byte) (n int, e error)
-	Receive([]byte) (m Message)
-}
-
-// AlgoConnection ...
-type AlgoConnection struct {
-	b []byte
-}
-
-func (a *AlgoConnection) Send([]byte) (n int, e error) {
-
+	// Send a message from your conn to RPi
+	Send(m message.Message) (n int, e error)
+	// Receive a message from RPi to your own conn
+	Receive(r message.Request) (n int, e error)
+	net.Conn
 }
