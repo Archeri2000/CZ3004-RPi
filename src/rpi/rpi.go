@@ -19,18 +19,16 @@ const offset = 10 // byte offset between ard/android message
 // Get is a abstraction of a client submitting a request to rpi
 // this just calls the handler
 // can implement a handler interface also
-func (rpi *RPi) Get(r message.Request) (m message.Message) {
+func (rpi *RPi) Get(r message.Request) {
 	switch r.Kind {
 	case message.Algo:
 		go rpi.AlgoHandler(r)
-		return <-r.Result
-	case message.Android:
+	case message.Android: // this does nothing - there will be no incoming messages from android
 		go rpi.AndroidHandler(r)
-		return <-r.Result
 	case message.Arduino:
 		go rpi.ArduinoHandler(r)
-		return <-r.Result
 	}
+	return
 }
 
 // AlgoHandler ...
@@ -41,7 +39,19 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
 	rpi.toArduino <- arduinoMessage
 	rpi.toAndroid <- androidMessage
-	m := <-rpi.toAlgo
-	r.Result <- m
+	r.Result <- <-rpi.toAlgo
+	close(r.Result)
+}
+
+// AndroidHandler ...
+func (rpi *RPi) AndroidHandler(r message.Request) {
+
+}
+
+// ArduinoHandler ...
+func (rpi *RPi) ArduinoHandler(r message.Request) {
+	// format data here
+	rpi.toAlgo <- r.M
+	r.Result <- <-rpi.toArduino
 	close(r.Result)
 }

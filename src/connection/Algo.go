@@ -33,5 +33,7 @@ func (a *AlgoConnection) Send(c chan message.Request) (n int, e error) {
 	}
 	r := message.Request{Kind: message.Algo, M: m} // don't initialise the result channel
 	c <- r
+	temp := <-r.Result
+	a.conn.Write(temp.Buf.Bytes())
 	return n, nil
 }
