@@ -1,2 +1,4 @@
-gopl.io v0.0.0-20191021194416-1e9cbf3a0aca h1:Mpe3voiv0YNUjsBKrRGBe0zNfZfNru0AilOm/dQofAo=
-gopl.io v0.0.0-20191021194416-1e9cbf3a0aca/go.mod h1:k9MBtwj/WjioNgt7Buity/chxOPmJqkZ5bEaeT4JVm4=
+github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4 h1:G2ztCwXov8mRvP0ZfjE6nAlaCX2XbykaeHdbT6KwDz0=
+github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4/go.mod h1:2RvX5ZjVtsznNZPEt4xwJXNJrM3VTZoQf7V6gk0ysvs=
+golang.org/x/sys v0.0.0-20200301204400-5d559ad92b82 h1:lMQVwSjnOFtj3Ssuec21gK8stJac9xnIo2CjVk2cczw=
+golang.org/x/sys v0.0.0-20200301204400-5d559ad92b82/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
