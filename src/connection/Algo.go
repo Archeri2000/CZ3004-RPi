@@ -15,7 +15,7 @@ type AlgoConnection struct {
 	toRPi chan message.Message // messages from rpi to algo
 }
 
-// Receive a message from rpi and services that message
+// Receive an outgoing message and send without expecting reply
 func (a *AlgoConnection) Receive(m message.Message) (n int, e error) {
 	n, e = a.conn.Read(m.Buf.Bytes())
 	if e != nil {

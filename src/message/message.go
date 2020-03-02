@@ -17,6 +17,9 @@ type Request struct {
 // Kind represents the kind of channel
 type Kind int
 
+// HeaderLength is the length of the header packet; rest of buffer is content
+const HeaderLength = 10
+
 const (
 	// Algo ...
 	Algo Kind = iota

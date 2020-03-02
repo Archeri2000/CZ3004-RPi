@@ -1,6 +1,7 @@
 package rpi
 
 import (
+	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
 )
@@ -8,10 +9,11 @@ import (
 // RPi represents the rpi multiplexer
 // multiplexes over 4 channels so idk - better way???
 type RPi struct {
-	requests  chan message.Request // incoming requests from all 4 channels
-	toAlgo    chan message.Message // a completed op for algo
-	toAndroid chan message.Message // a completed op for android
-	toArduino chan message.Message // a completed op for arduino
+	requests  chan message.Request       // incoming requests from all 4 channels
+	toAlgo    chan message.Message       // a completed op for algo
+	toAndroid chan message.Message       // a completed op for android
+	toArduino chan message.Message       // a completed op for arduino
+	handlers  map[string]handler.Handler // stores handlers
 }
 
 const offset = 10 // byte offset between ard/android message
@@ -38,8 +40,10 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 	androidBytes := r.M.Buf.Bytes()
 	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
 	rpi.toArduino <- arduinoMessage
+	// Arduino connection object will Receive the message and send it to arduino
+	// instead of a blocking listen - call receive on connection obj
 	rpi.toAndroid <- androidMessage
-	r.Result <- <-rpi.toAlgo
+	r.Result <- <-rpi.toAlgo // check
 	close(r.Result)
 }
 
@@ -54,4 +58,9 @@ func (rpi *RPi) ArduinoHandler(r message.Request) {
 	rpi.toAlgo <- r.M
 	r.Result <- <-rpi.toArduino
 	close(r.Result)
+}
+
+// RegisterHandler ...
+func (rpi *RPi) RegisterHandler(h handler.Handler, name string) {
+	rpi.handlers[name]
 }
