@@ -12,13 +12,13 @@ const offset = 10
 // AlgoConnection ...
 // when do we close the channel? or leave open?
 type AlgoConnection struct {
-	conn  net.TCPConn          // represents the bytestream
+	conn  *net.TCPConn         // represents the bytestream
 	toRPi chan message.Request // messages from algo to rpi
 }
 
-// Receive an outgoing message and send without expecting reply
+// Receive an outgoing message  from rpi and send to conn without expecting reply
 func (a *AlgoConnection) Receive(m message.Message) (n int, e error) {
-	n, e = a.conn.Read(m.Buf.Bytes())
+	n, e = a.conn.Write(m.Buf.Bytes())
 	if e != nil {
 		return n, e
 	}
@@ -37,4 +37,20 @@ func (a *AlgoConnection) Send(b []byte) (n int, e error) {
 		a.conn.Write(temp.Buf.Bytes())
 	}
 	return n, nil
+}
+
+// NewAlgo ...
+func NewAlgo(c chan message.Request) *AlgoConnection {
+	t, e := net.ResolveTCPAddr("tcp4", ":9999")
+	if e != nil {
+		panic(e)
+	}
+	conn, e := net.ListenTCP("tcp", t)
+	for {
+		actual, e := conn.AcceptTCP()
+		if e != nil {
+			continue
+		}
+		return &AlgoConnection{conn: actual, toRPi: c}
+	}
 }

@@ -59,3 +59,8 @@ func (rpi *RPi) RegisterHandler(h handler.Handler, m message.Kind) {
 func (rpi *RPi) RegisterReceievers(r handler.Receiver, m message.Kind) {
 	rpi.outgoingReceivers[m] = r
 }
+
+// NewRPi returns a new RPi
+func NewRPi() (rpi *RPi) {
+	return &RPi{requests: make(chan message.Request)}
+}
