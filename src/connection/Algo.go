@@ -2,6 +2,7 @@ package connection
 
 import (
 	"CZ3004-RPi/src/message"
+	"bytes"
 	"net"
 )
 
@@ -12,7 +13,7 @@ const offset = 10
 // when do we close the channel? or leave open?
 type AlgoConnection struct {
 	conn  net.TCPConn          // represents the bytestream
-	toRPi chan message.Message // messages from rpi to algo
+	toRPi chan message.Request // messages from algo to rpi
 }
 
 // Receive an outgoing message and send without expecting reply
@@ -25,15 +26,15 @@ func (a *AlgoConnection) Receive(m message.Message) (n int, e error) {
 }
 
 // Send request to rpi from your own internal channel
-func (a *AlgoConnection) Send(c chan message.Request) (n int, e error) {
+func (a *AlgoConnection) Send(b []byte) (n int, e error) {
 	// check if a.toRPi is nil
-	m, ok := <-a.toRPi
-	if !ok { // channel already closed
-		return 0, nil
-	}
+	// wrap data
+	m := message.Message{Buf: bytes.NewBuffer(b)}
 	r := message.Request{Kind: message.Algo, M: m} // don't initialise the result channel
-	c <- r
+	a.toRPi <- r
 	temp := <-r.Result
-	a.conn.Write(temp.Buf.Bytes())
+	if r.Result != nil {
+		a.conn.Write(temp.Buf.Bytes())
+	}
 	return n, nil
 }

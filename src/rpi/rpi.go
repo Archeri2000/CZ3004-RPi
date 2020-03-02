@@ -9,27 +9,20 @@ import (
 // RPi represents the rpi multiplexer
 // multiplexes over 4 channels so idk - better way???
 type RPi struct {
-	requests  chan message.Request       // incoming requests from all 4 channels
-	toAlgo    chan message.Message       // a completed op for algo
-	toAndroid chan message.Message       // a completed op for android
-	toArduino chan message.Message       // a completed op for arduino
-	handlers  map[string]handler.Handler // stores handlers
+	requests          chan message.Request              // incoming requests from all 4 channels
+	toAlgo            chan message.Message              // a completed op for algo
+	toAndroid         chan message.Message              // a completed op for android
+	toArduino         chan message.Message              // a completed op for arduino
+	incomingHandlers  map[message.Kind]handler.Handler  // stores incoming handlers
+	outgoingReceivers map[message.Kind]handler.Receiver // stores outgoing handlers - wrapper over connections
 }
 
 const offset = 10 // byte offset between ard/android message
 
 // Get is a abstraction of a client submitting a request to rpi
 // this just calls the handler
-// can implement a handler interface also
 func (rpi *RPi) Get(r message.Request) {
-	switch r.Kind {
-	case message.Algo:
-		go rpi.AlgoHandler(r)
-	case message.Android: // this does nothing - there will be no incoming messages from android
-		go rpi.AndroidHandler(r)
-	case message.Arduino:
-		go rpi.ArduinoHandler(r)
-	}
+	go rpi.incomingHandlers[r.Kind](r)
 	return
 }
 
@@ -39,28 +32,30 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 	arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
 	androidBytes := r.M.Buf.Bytes()
 	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
-	rpi.toArduino <- arduinoMessage
-	// Arduino connection object will Receive the message and send it to arduino
-	// instead of a blocking listen - call receive on connection obj
-	rpi.toAndroid <- androidMessage
-	r.Result <- <-rpi.toAlgo // check
+	rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+	rpi.outgoingReceivers[message.Android](androidMessage)
+	r.Result <- <-rpi.toAlgo
 	close(r.Result)
 }
 
-// AndroidHandler ...
+// AndroidHandler handles incoming misc messages from arduino conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
 
 }
 
-// ArduinoHandler ...
+// ArduinoHandler handles incoming sensor input from arduino conn
 func (rpi *RPi) ArduinoHandler(r message.Request) {
 	// format data here
-	rpi.toAlgo <- r.M
-	r.Result <- <-rpi.toArduino
+	rpi.toAlgo <- r.M // new message with formatted data not r.m
 	close(r.Result)
 }
 
-// RegisterHandler ...
-func (rpi *RPi) RegisterHandler(h handler.Handler, name string) {
-	rpi.handlers[name]
+// RegisterHandler registers a given handler to the internal handler hashmap of rpi
+func (rpi *RPi) RegisterHandler(h handler.Handler, m message.Kind) {
+	rpi.incomingHandlers[m] = h
+}
+
+// RegisterReceievers ...
+func (rpi *RPi) RegisterReceievers(r handler.Receiver, m message.Kind) {
+	rpi.outgoingReceivers[m] = r
 }

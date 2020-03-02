@@ -6,6 +6,7 @@ func main() {
 		TOOO: initial initialization
 		TODO: android: bluetooth/arduino: uarts
 		TODO: perhaps refactor handler into interfaces?
+		TODO: link conn and rpi
 
 		set up and initialize the rpi module
 		set up individual connections
