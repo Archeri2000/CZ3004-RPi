@@ -3,15 +3,11 @@ package handler
 import "CZ3004-RPi/src/message"
 
 // Handler is an adapter to wrap receieve methods
-type Handler func(r message.Request) (n int, e error)
+type Handler func(r message.Request)
 
 // Handle is an adapter method
-func (h Handler) Handle(r message.Request) (n int, e error) {
-	n, e = h(r)
-	if e != nil {
-		return 0, e
-	}
-	return n, nil
+func (h Handler) Handle(r message.Request) {
+	h(r)
 }
 
 // Receiver ...

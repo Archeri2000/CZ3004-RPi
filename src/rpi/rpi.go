@@ -9,7 +9,7 @@ import (
 // RPi represents the rpi multiplexer
 // multiplexes over 4 channels so idk - better way???
 type RPi struct {
-	requests          chan message.Request              // incoming requests from all 4 channels
+	Requests          chan message.Request              // incoming requests from all 4 channels
 	toAlgo            chan message.Message              // a completed op for algo
 	toAndroid         chan message.Message              // a completed op for android
 	toArduino         chan message.Message              // a completed op for arduino
@@ -17,7 +17,7 @@ type RPi struct {
 	outgoingReceivers map[message.Kind]handler.Receiver // stores outgoing handlers - wrapper over connections
 }
 
-const offset = 10 // byte offset between ard/android message
+const offset = 1 // byte offset between ard/android message
 
 // Get is a abstraction of a client submitting a request to rpi
 // this just calls the handler
@@ -29,6 +29,7 @@ func (rpi *RPi) Get(r message.Request) {
 // AlgoHandler ...
 func (rpi *RPi) AlgoHandler(r message.Request) {
 	arduinoBytes := make([]byte, offset)
+	r.M.Buf.Read(arduinoBytes)
 	arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
 	androidBytes := r.M.Buf.Bytes()
 	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
@@ -55,12 +56,12 @@ func (rpi *RPi) RegisterHandler(h handler.Handler, m message.Kind) {
 	rpi.incomingHandlers[m] = h
 }
 
-// RegisterReceievers ...
-func (rpi *RPi) RegisterReceievers(r handler.Receiver, m message.Kind) {
+// RegisterReceivers ...
+func (rpi *RPi) RegisterReceivers(r handler.Receiver, m message.Kind) {
 	rpi.outgoingReceivers[m] = r
 }
 
 // NewRPi returns a new RPi
 func NewRPi() (rpi *RPi) {
-	return &RPi{requests: make(chan message.Request)}
+	return &RPi{Requests: make(chan message.Request), toAlgo: make(chan message.Message), toAndroid: make(chan message.Message), toArduino: make(chan message.Message), incomingHandlers: make(map[message.Kind]handler.Handler), outgoingReceivers: make(map[message.Kind]handler.Receiver)}
 }
