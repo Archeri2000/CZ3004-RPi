@@ -36,9 +36,15 @@ func main() {
 	rpi.RegisterHandler(AndroidH, message.Android)
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
-	And := connection.NewAndroid(rpi.Requests)
-	rpi.RegisterReceivers(And.Receive, message.Android)
-	go listenOn(And)
+	//And := connection.NewAndroid(rpi.Requests)
+	//rpi.RegisterReceivers(And.Receive, message.Android)
+	//go listenOn(And)
+	//for i := range rpi.Requests {
+	//	rpi.Get(i)
+	//}
+	Ardu := connection.NewArduino("/dev/ttyACM0", 115200, rpi.Requests)
+	fmt.Printf("Success!")
+	go listenOn(Ardu)
 	for i := range rpi.Requests {
 		rpi.Get(i)
 	}
