@@ -14,7 +14,7 @@ type MockConn struct {
 }
 
 func (m *MockConn) Read(b []byte) (n int, e error) {
-	if m.CanRead {
+	if m.CanRead || true {
 		copy(b, m.TestValue)
 		m.CanRead = false
 		return len(m.TestValue), nil
