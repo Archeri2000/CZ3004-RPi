@@ -72,6 +72,7 @@ func listenOn(c *connection.Connection) {
 		fmt.Printf("%d\n", buf.Len())
 		if e == nil {
 			_, _ = c.Send(buf.Bytes())
+			buf = bytes.Buffer{}
 		}
 	}
 }
