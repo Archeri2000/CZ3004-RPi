@@ -1,30 +1,30 @@
-// +build aix darwin dragonfly freebsd linux netbsd openbsd solaris
+// +build linux
 
 package connection
 
 import (
 	"CZ3004-RPi/src/message"
 	"fmt"
-	"golang.org/x/sys/unix"
+	. "golang.org/x/sys/unix"
 )
 
 // AndroidConnection ...
 
 // NewAndroid ...
-func NewAndroid(port string, baud uint, toRPi chan message.Request) *Connection {
+func NewAndroid(toRPi chan message.Request) *Connection {
 	fd, _ := Socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)
-	_ = unix.Bind(fd, &unix.SockaddrRFCOMM{
+	_ = Bind(fd, &SockaddrRFCOMM{
 		Channel: 1,
 		Addr:    [6]uint8{0, 0, 0, 0, 0, 0}, // BDADDR_ANY or 00:00:00:00:00:00
 	})
 	_ = Listen(fd, 1)
-	nfd, sa, _ := Accept(fd)
-	fmt.Printf("conn addr=%v fd=%d", sa.(*unix.SockaddrRFCOMM).Addr, nfd)
-	Read(nfd, buf)
+
 	for {
+		nfd, sa, err := Accept(fd)
+		fmt.Printf("conn addr=%v fd=%d", sa.(*SockaddrRFCOMM).Addr, nfd)
 		if err != nil {
 			continue
 		}
-		return &Connection{conn, toRPi, message.Android}
+		return &Connection{NewBluetoothSocket(sa, nfd), toRPi, message.Android}
 	}
 }

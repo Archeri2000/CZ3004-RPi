@@ -7,6 +7,7 @@ import (
 	"CZ3004-RPi/src/rpi"
 	"bufio"
 	"bytes"
+	"os"
 )
 
 // ENDL
@@ -34,6 +35,8 @@ func main() {
 	rpi.RegisterHandler(AndroidH, message.Android)
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
+	connection.NewAndroid(rpi.Requests)
+	os.Exit(0)
 	/*
 		AlgoConn := connection.NewAlgo(rpi.Requests)
 		AndroidConn := connection.NewAndroid(rpi.Requests)
@@ -53,9 +56,6 @@ func main() {
 	for i := range rpi.Requests {
 		rpi.Get(i)
 	}
-	for {
-
-	}
 }
 
 func listenOn(c connection.Connection) {
@@ -64,7 +64,7 @@ func listenOn(c connection.Connection) {
 		r, e := bufio.NewReader(&c).ReadString(ENDL)
 		buf.Write([]byte(r))
 		if e == nil {
-			c.Send(buf.Bytes())
+			_, _ = c.Send(buf.Bytes())
 		}
 
 	}

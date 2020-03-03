@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a8eb18ab-e082-4222-8d57-06a768a8a805" name="Default Changelist" comment="Renamed ListenOn">
+    <list default="true" id="a8eb18ab-e082-4222-8d57-06a768a8a805" name="Default Changelist" comment="Updated android.go">
+      <change afterPath="$PROJECT_DIR$/src/connection/BluetoothSocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CZ3004MDP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CZ3004MDP.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connection/Android.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/connection/Android.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +59,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="go.vgo" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoProjectSettingsConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -282,13 +284,19 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add Arduino" />
     <MESSAGE value="Renamed ListenOn" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed ListenOn" />
+    <MESSAGE value="Added build tags to android.golang" />
+    <MESSAGE value="Updated android.go" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated android.go" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
     <proxy>direct</proxy>
   </component>
   <component name="WindowStateProjectService">
+    <state x="361" y="72" key="#Build_Tags_&amp;_Vendoring" timestamp="1583215271451">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="72" key="#Build_Tags_&amp;_Vendoring/0.0.1536.824@0.0.1536.824" timestamp="1583215271451" />
     <state x="361" y="72" key="#Go_Modules_(vgo)" timestamp="1582858190067">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -313,10 +321,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="491" y="42" key="#go_build_message.go/0.0.1536.824@0.0.1536.824" timestamp="1583202068104" />
-    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583214683846">
+    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583217448813">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583214683846" />
+    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583217448813" />
     <state x="548" y="168" key="FileChooserDialogImpl" timestamp="1582858567668">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -341,14 +349,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="120" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1583113213614" />
-    <state x="277" y="56" key="SettingsEditor" timestamp="1583113748618">
+    <state x="277" y="56" key="SettingsEditor" timestamp="1583215402558">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583113748618" />
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583208736584">
+    <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583215402558" />
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583217401095">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583208736584" />
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583217401095" />
     <state x="444" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1581642100503">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -357,5 +365,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="577" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1583201575440" />
+    <state x="452" y="128" width="682" height="568" key="find.popup" timestamp="1583215325973">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="452" y="128" width="682" height="568" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1583215325973" />
   </component>
 </project>

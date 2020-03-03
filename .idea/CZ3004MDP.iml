@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
+  <component name="Go">
+    <buildTags>
+      <option name="os" value="linux" />
+      <option name="arch" value="arm64" />
+    </buildTags>
+  </component>
   <component name="GoLibraries">
     <option name="urls">
       <list>
