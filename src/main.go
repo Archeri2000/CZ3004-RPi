@@ -36,8 +36,11 @@ func main() {
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
 	And := connection.NewAndroid(rpi.Requests)
-	listenOn(And)
 	rpi.RegisterReceivers(And.Receive, message.Android)
+	go listenOn(And)
+	for i := range rpi.Requests {
+		rpi.Get(i)
+	}
 	os.Exit(0)
 	/*
 		AlgoConn := connection.NewAlgo(rpi.Requests)
