@@ -12,7 +12,7 @@ import (
 )
 
 // ENDL
-const ENDL byte = 'a'
+const ENDL byte = '\n'
 
 func main() {
 	/*
@@ -42,7 +42,7 @@ func main() {
 	Ardu := connection.NewArduino("/dev/ttyACM0", 115200, rpi.Requests)
 	rpi.RegisterReceivers(Ardu.Receive, message.Arduino)
 	fmt.Printf("Success!")
-	MockAlgo := connection.Connection{&connection.MockConn{"1testa", true, "algo"}, rpi.Requests, message.Algo}
+	MockAlgo := connection.Connection{&connection.MockConn{"1test\n", true, "algo"}, rpi.Requests, message.Algo}
 	rpi.RegisterReceivers(MockAlgo.Receive, message.Algo)
 	go listenOn(And)
 	go listenOn(&MockAlgo)
