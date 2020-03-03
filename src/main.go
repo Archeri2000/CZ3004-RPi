@@ -71,6 +71,5 @@ func listenOn(c *connection.Connection) {
 		if e == nil {
 			_, _ = c.Send(buf.Bytes())
 		}
-
 	}
 }
