@@ -11,7 +11,7 @@ import (
 )
 
 // ENDL
-const ENDL byte = '\n'
+const ENDL byte = 'a'
 
 func main() {
 	/*
