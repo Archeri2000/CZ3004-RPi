@@ -14,7 +14,7 @@ import (
 func NewAndroid(toRPi chan message.Request) *Connection {
 	fd, _ := Socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM)
 	_ = Bind(fd, &SockaddrRFCOMM{
-		Channel: 1,
+		Channel: 2,
 		Addr:    [6]uint8{0, 0, 0, 0, 0, 0}, // BDADDR_ANY or 00:00:00:00:00:00
 	})
 	er := Listen(fd, 1)
