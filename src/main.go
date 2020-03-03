@@ -66,8 +66,9 @@ func main() {
 
 func listenOn(c *connection.Connection) {
 	buf := bytes.Buffer{}
+	reader := bufio.NewReader(c)
 	for {
-		r, e := bufio.NewReader(c).ReadString(ENDL)
+		r, e := reader.ReadString(ENDL)
 		buf.Write([]byte(r))
 		fmt.Printf("%d\n", buf.Len())
 		if e == nil {
