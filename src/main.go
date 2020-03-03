@@ -6,11 +6,11 @@ import (
 	"CZ3004-RPi/src/message"
 	"CZ3004-RPi/src/rpi"
 	"bufio"
-	"io"
+	"bytes"
 )
 
 // ENDL
-const ENDL rune = '\n'
+const ENDL byte = '\n'
 
 func main() {
 	/*
@@ -18,7 +18,7 @@ func main() {
 		TOOO: initial initialization
 		TODO: link conn and rpi
 
-		set up and initialize the rpi module
+		set up and listenOn the rpi module
 		set up individual connections
 
 		go func() {
@@ -47,9 +47,9 @@ func main() {
 	rpi.RegisterReceivers(MockAndroid.Receive, message.Android)
 	rpi.RegisterReceivers(MockArduino.Receive, message.Arduino)
 
-	go initialize(MockAlgo)
-	go initialize(MockArduino)
-	go initialize(MockAndroid)
+	go listenOn(MockAlgo)
+	go listenOn(MockArduino)
+	go listenOn(MockAndroid)
 	for i := range rpi.Requests {
 		rpi.Get(i)
 	}
@@ -58,12 +58,14 @@ func main() {
 	}
 }
 
-func initialize(c connection.Connection) {
+func listenOn(c connection.Connection) {
+	buf := bytes.Buffer{}
 	for {
-		r, e := bufio.NewReader(&c).ReadString('\n')
-		if e != nil && e != io.EOF {
-			continue
+		r, e := bufio.NewReader(&c).ReadString(ENDL)
+		buf.Write([]byte(r))
+		if e == nil {
+			c.Send(buf.Bytes())
 		}
-		c.Send([]byte(r))
+
 	}
 }
