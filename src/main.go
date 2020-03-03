@@ -7,6 +7,7 @@ import (
 	"CZ3004-RPi/src/rpi"
 	"bufio"
 	"bytes"
+	"fmt"
 	"os"
 )
 
@@ -68,6 +69,7 @@ func listenOn(c *connection.Connection) {
 	for {
 		r, e := bufio.NewReader(c).ReadString(ENDL)
 		buf.Write([]byte(r))
+		fmt.Printf("%d\n", buf.Len())
 		if e == nil {
 			_, _ = c.Send(buf.Bytes())
 		}

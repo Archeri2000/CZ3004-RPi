@@ -19,7 +19,6 @@ func NewBluetoothSocket(sockAddr Sockaddr, nfr int) *BluetoothSocket {
 
 func (sock *BluetoothSocket) Read(p []byte) (n int, e error) {
 	n, e = Read(sock.nfr, p)
-	fmt.Printf("n: %d, e: %s", n, e)
 	if e != nil {
 		fmt.Printf("n: %d, e: %s", n, e)
 	}
