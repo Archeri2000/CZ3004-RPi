@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a8eb18ab-e082-4222-8d57-06a768a8a805" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connection/BluetoothSocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/connection/BluetoothSocket.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +65,7 @@
       <recent name="D:\Documents\NTU\Year2\Sem2\CZ3004MDP" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build message.go">
+  <component name="RunManager" selected="Go Build.go build main.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="CZ3004MDP" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -103,6 +103,31 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="CZ3004MDP" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <envs>
+        <env name="GOOS" value="linux" />
+        <env name="GOARCH" value="arm64" />
+      </envs>
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
+        </ENTRIES>
+      </EXTENSION>
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/src/main.go" />
+      <directory value="$PROJECT_DIR$/" />
+      <output_directory value="$PROJECT_DIR$" />
+      <option name="run" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build message.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="CZ3004MDP" />
       <working_directory value="$PROJECT_DIR$" />
@@ -118,25 +143,6 @@
       </EXTENSION>
       <kind value="FILE" />
       <filePath value="$PROJECT_DIR$/src/message/message.go" />
-      <directory value="$PROJECT_DIR$/" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build rpi main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
-      <module name="CZ3004MDP" />
-      <working_directory value="$PROJECT_DIR$/" />
-      <go_parameters value="-i" />
-      <EXTENSION ID="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" />
-        </ENTRIES>
-      </EXTENSION>
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/|$PROJECT_DIR$/src/main.go" />
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
@@ -229,7 +235,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Go Build.go build rpi main.go" />
+      <item itemvalue="Go Build.go build main.go" />
       <item itemvalue="Go Build.go build connection.go" />
       <item itemvalue="Go Build.go build message.go" />
     </list>
@@ -282,7 +288,8 @@
     <MESSAGE value="Renamed ListenOn" />
     <MESSAGE value="Added build tags to android.golang" />
     <MESSAGE value="Updated android.go" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated android.go" />
+    <MESSAGE value="Remove unneeded dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove unneeded dependency" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -297,10 +304,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="72" key="#Go_Modules_(vgo)/0.0.1536.824@0.0.1536.824" timestamp="1582858190067" />
-    <state x="223" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582858105250">
+    <state x="223" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583219651166">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="223" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1582858105250" />
+    <state x="223" y="68" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1583219651166" />
     <state x="481" y="203" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583113418761">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -313,46 +320,58 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="491" y="42" key="#go_build_connection.go/0.0.1536.824@0.0.1536.824" timestamp="1582858282423" />
+    <state x="491" y="42" key="#go_build_main.go" timestamp="1583219592456">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="491" y="42" key="#go_build_main.go/0.0.1536.824@0.0.1536.824" timestamp="1583219592456" />
     <state x="491" y="42" key="#go_build_message.go" timestamp="1583202068104">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="491" y="42" key="#go_build_message.go/0.0.1536.824@0.0.1536.824" timestamp="1583202068104" />
-    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583217483814">
+    <state x="491" y="50" key="#go_build_rpi_main.go" timestamp="1583219294886">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583217483814" />
-    <state x="548" y="168" key="FileChooserDialogImpl" timestamp="1582858567668">
+    <state x="491" y="50" key="#go_build_rpi_main.go/0.0.1536.824@0.0.1536.824" timestamp="1583219294886" />
+    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583217819335">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="548" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1582858567668" />
-    <state width="1493" height="190" key="GridCell.Tab.0.bottom" timestamp="1582858295964">
+    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583217819335" />
+    <state x="503" y="161" key="EnvironmentVariablesDialog" timestamp="1583219580295">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="190" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1582858295964" />
-    <state width="1493" height="190" key="GridCell.Tab.0.center" timestamp="1582858295964">
+    <state x="503" y="161" key="EnvironmentVariablesDialog/0.0.1536.824@0.0.1536.824" timestamp="1583219580295" />
+    <state x="548" y="168" key="FileChooserDialogImpl" timestamp="1583219649425">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="190" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1582858295964" />
-    <state width="1493" height="190" key="GridCell.Tab.0.left" timestamp="1582858295963">
+    <state x="548" y="168" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1583219649425" />
+    <state width="1493" height="118" key="GridCell.Tab.0.bottom" timestamp="1583219653573">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="190" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1582858295963" />
-    <state width="1493" height="190" key="GridCell.Tab.0.right" timestamp="1582858295964">
+    <state width="1493" height="118" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583219653573" />
+    <state width="1493" height="118" key="GridCell.Tab.0.center" timestamp="1583219653573">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="190" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1582858295964" />
+    <state width="1493" height="118" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583219653573" />
+    <state width="1493" height="118" key="GridCell.Tab.0.left" timestamp="1583219653572">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="118" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583219653572" />
+    <state width="1493" height="118" key="GridCell.Tab.0.right" timestamp="1583219653573">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="118" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583219653573" />
     <state x="473" y="120" key="MultipleFileMergeDialog" timestamp="1583113213614">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="473" y="120" key="MultipleFileMergeDialog/0.0.1536.824@0.0.1536.824" timestamp="1583113213614" />
-    <state x="277" y="56" key="SettingsEditor" timestamp="1583215402558">
+    <state x="277" y="56" key="SettingsEditor" timestamp="1583219380948">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583215402558" />
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583217489011">
+    <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583219380948" />
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583217821403">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583217489011" />
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583217821403" />
     <state x="444" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1581642100503">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
