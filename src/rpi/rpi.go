@@ -4,6 +4,7 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
+	"os"
 )
 
 // RPi represents the rpi multiplexer
@@ -41,7 +42,10 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 
 // AndroidHandler handles incoming misc messages from arduino conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
-
+	androidBytes := r.M.Buf.Bytes()
+	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
+	os.Stdout.Write(androidBytes)
+	rpi.outgoingReceivers[message.Android](androidMessage)
 }
 
 // ArduinoHandler handles incoming sensor input from arduino conn

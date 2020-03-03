@@ -17,9 +17,9 @@ func NewAndroid(toRPi chan message.Request) *Connection {
 		Channel: 2,
 		Addr:    [6]uint8{0, 0, 0, 0, 0, 0}, // BDADDR_ANY or 00:00:00:00:00:00
 	})
-	er := Listen(fd, 1)
-	fmt.Printf("listening %s\n", er)
-	fmt.Printf("file descriptor: %d\n", fd)
+	_ = Listen(fd, 1)
+	//fmt.Printf("listening %s\n", er)
+	//fmt.Printf("file descriptor: %d\n", fd)
 	for {
 		nfd, sa, err := Accept(fd)
 		fmt.Printf("conn addr=%v fd=%d", sa.(*SockaddrRFCOMM).Addr, nfd)

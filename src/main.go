@@ -35,7 +35,9 @@ func main() {
 	rpi.RegisterHandler(AndroidH, message.Android)
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
-	connection.NewAndroid(rpi.Requests)
+	And := connection.NewAndroid(rpi.Requests)
+	listenOn(And)
+	rpi.RegisterReceivers(And.Receive, message.Android)
 	os.Exit(0)
 	/*
 		AlgoConn := connection.NewAlgo(rpi.Requests)
@@ -50,18 +52,18 @@ func main() {
 	rpi.RegisterReceivers(MockAndroid.Receive, message.Android)
 	rpi.RegisterReceivers(MockArduino.Receive, message.Arduino)
 
-	go listenOn(MockAlgo)
-	go listenOn(MockArduino)
-	go listenOn(MockAndroid)
+	go listenOn(&MockAlgo)
+	go listenOn(&MockArduino)
+	go listenOn(&MockAndroid)
 	for i := range rpi.Requests {
 		rpi.Get(i)
 	}
 }
 
-func listenOn(c connection.Connection) {
+func listenOn(c *connection.Connection) {
 	buf := bytes.Buffer{}
 	for {
-		r, e := bufio.NewReader(&c).ReadString(ENDL)
+		r, e := bufio.NewReader(c).ReadString(ENDL)
 		buf.Write([]byte(r))
 		if e == nil {
 			_, _ = c.Send(buf.Bytes())
