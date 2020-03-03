@@ -15,7 +15,7 @@ func NewArduino(port string, baud uint, toRPi chan message.Request) *Connection 
 		BaudRate:        baud,
 		DataBits:        8,
 		StopBits:        1,
-		MinimumReadSize: 4,
+		MinimumReadSize: 1,
 	}
 	for {
 		conn, err := serial.Open(options)

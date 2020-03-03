@@ -77,7 +77,8 @@ func listenOn(c *connection.Connection) {
 	for {
 		r, e := reader.ReadString(ENDL)
 		buf.Write([]byte(r))
-		fmt.Printf("%d\n", buf.Len())
+		//fmt.Printf("%d\n", buf.Len())
+		//fmt.Printf("%d\n", buf.Len())
 		if e == nil {
 			_, _ = c.Send(buf.Bytes())
 			buf = bytes.Buffer{}
