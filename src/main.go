@@ -36,14 +36,15 @@ func main() {
 	rpi.RegisterHandler(AndroidH, message.Android)
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
-	//And := connection.NewAndroid(rpi.Requests)
-	//rpi.RegisterReceivers(And.Receive, message.Android)
-	//go listenOn(And)
-	//for i := range rpi.Requests {
-	//	rpi.Get(i)
-	//}
+	And := connection.NewAndroid(rpi.Requests)
+	rpi.RegisterReceivers(And.Receive, message.Android)
 	Ardu := connection.NewArduino("/dev/ttyACM0", 115200, rpi.Requests)
+	rpi.RegisterReceivers(Ardu.Receive, message.Arduino)
 	fmt.Printf("Success!")
+	MockAlgo := connection.Connection{&connection.MockConn{"stesta", true, "algo"}, rpi.Requests, message.Algo}
+	rpi.RegisterReceivers(MockAlgo.Receive, message.Algo)
+	go listenOn(And)
+	go listenOn(&MockAlgo)
 	go listenOn(Ardu)
 	for i := range rpi.Requests {
 		rpi.Get(i)
@@ -54,7 +55,6 @@ func main() {
 		AndroidConn := connection.NewAndroid(rpi.Requests)
 		ArduinoConn, _ := connection.NewArduino("8080", 8, rpi.Requests)
 	*/
-	MockAlgo := connection.Connection{&connection.MockConn{"1234\n", true, "algo"}, rpi.Requests, message.Algo}
 	MockAndroid := connection.Connection{&connection.MockConn{"2345\n", true, "android"}, rpi.Requests, message.Android}
 	MockArduino := connection.Connection{&connection.MockConn{"3456\n", true, "arduino"}, rpi.Requests, message.Arduino}
 
