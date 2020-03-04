@@ -49,6 +49,7 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		fastestPath = append([]byte(strconv.Itoa(int(message.FastestPath))), fastestPath...) // assumption - moves can be broken into bytes
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(fastestPath)}
 		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+		rpi.toAndroid <- message.Message{&bytes.Buffer{}}
 	case message.Calibration:
 		// request from algo for calibration - route to arduino
 		arduinoBytes := r.M.Buf.Bytes()
@@ -65,15 +66,16 @@ func (rpi *RPi) AndroidHandler(r message.Request) {
 	switch r.Header {
 	// implicit assumption to do calibration
 	case message.FastestPathStart:
-		algoBytes := []byte{'\n'}
-		algoBytes = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes...)
-		algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
-		rpi.outgoingReceivers[message.Arduino](algoMessage) // only fp start routes to ardu
-	case message.ExplorationStart:
+		<-rpi.toAndroid
 		arduinoBytes := []byte{'\n'}
-		arduinoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), arduinoBytes...)
+		arduinoBytes = append([]byte(strconv.Itoa(int(message.FastestPathStart))), arduinoBytes...)
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
-		rpi.outgoingReceivers[message.Algo](arduinoMessage) // exploration start + waypoint start routes to algo
+		rpi.outgoingReceivers[message.Arduino](arduinoMessage) // only fp start routes to ardu
+	case message.ExplorationStart:
+		algoBytes := []byte{'\n'}
+		algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
+		algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
+		rpi.outgoingReceivers[message.Algo](algoMessage) // exploration start + waypoint start routes to algo
 	case message.SetWaypoint:
 		algoBytes := r.M.Buf.Bytes()
 		algoBytes = append([]byte(strconv.Itoa(int(message.SetWaypoint))), algoBytes...)
