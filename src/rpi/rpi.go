@@ -5,6 +5,7 @@ import (
 	"CZ3004-RPi/src/message"
 	"bytes"
 	"os"
+	"strconv"
 )
 
 // RPi represents the rpi multiplexer
@@ -27,20 +28,38 @@ func (rpi *RPi) Get(r message.Request) {
 	return
 }
 
-// AlgoHandler ...
+// AlgoHandler handles incoming messages from Algo conn
 func (rpi *RPi) AlgoHandler(r message.Request) {
-	arduinoBytes := make([]byte, offset)
-	r.M.Buf.Read(arduinoBytes)
-	arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
-	androidBytes := r.M.Buf.Bytes()
-	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
-	rpi.outgoingReceivers[message.Arduino](arduinoMessage)
-	rpi.outgoingReceivers[message.Android](androidMessage)
-	r.Result <- <-rpi.toAlgo
+	switch r.Header {
+	case message.Move:
+		// Split for ardu
+		arduinoBytes := make([]byte, offset)
+		r.M.Buf.Read(arduinoBytes)
+		arduinoBytes = append([]byte(strconv.Itoa(int(message.Move))), arduinoBytes...)
+		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
+		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+		// Split for android
+		// assumption - algo adds the pipe separator
+		androidBytes := r.M.Buf.Bytes()
+		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
+		rpi.outgoingReceivers[message.Android](androidMessage)
+		r.Result <- <-rpi.toAlgo
+	case message.FastestPath:
+		fastestPath := r.M.Buf.Bytes()                                                       // grab byte array representing moves
+		fastestPath = append([]byte(strconv.Itoa(int(message.FastestPath))), fastestPath...) // assumption - moves can be broken into bytes
+		arduinoMessage := message.Message{Buf: bytes.NewBuffer(fastestPath)}
+		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+	case message.Calibration:
+		// request from algo for calibration - route to arduino
+		arduinoBytes := r.M.Buf.Bytes()
+		arduinoBytes = append([]byte(strconv.Itoa(int(message.Calibration))), arduinoBytes...)
+		arduinoMessage := message.Message{bytes.NewBuffer(arduinoBytes)}
+		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+	}
 	close(r.Result)
 }
 
-// AndroidHandler handles incoming misc messages from arduino conn
+// AndroidHandler handles incoming misc messages from android conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
 	switch r.Header {
 	// implicit assumption to do calibration
