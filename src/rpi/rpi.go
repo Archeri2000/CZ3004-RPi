@@ -40,20 +40,18 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 	close(r.Result)
 }
 
-// AndroidHandler handles incoming misc messages from arduino conn
+// AndroidHandler handles incoming misc messages from android conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
+	algoBytes := r.M.Buf.Bytes()
+	algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
+	os.Stdout.Write(algoBytes)
 	switch r.Header {
 	// implicit assumption to do calibration
-	case message.ExplorationStart:
-
-	case message.SetWaypoint:
 	case message.FastestPathStart:
+		rpi.outgoingReceivers[message.Arduino](algoMessage) // only fp start routes to ardu
+	default:
+		rpi.outgoingReceivers[message.Algo](algoMessage) // exploration start + waypoint start routes to algo
 	}
-
-	androidBytes := r.M.Buf.Bytes()
-	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
-	os.Stdout.Write(androidBytes)
-	rpi.outgoingReceivers[message.Android](androidMessage)
 	close(r.Result)
 }
 

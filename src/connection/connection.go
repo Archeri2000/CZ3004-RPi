@@ -13,7 +13,7 @@ type Connection struct {
 	Kind               message.Kind
 }
 
-// Receive an outgoing message  from rpi and send to conn without expecting reply
+// Receive an outgoing message from rpi and send to conn without expecting reply
 func (conn *Connection) Receive(m message.Message) (n int, e error) {
 	n, e = conn.Write(m.Buf.Bytes())
 	if e != nil {

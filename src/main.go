@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-// ENDL
+// ENDL ...
 const ENDL byte = '\n'
 
 func main() {
