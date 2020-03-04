@@ -12,10 +12,14 @@ type Request struct {
 	Kind   Kind         // represents the Connection sending the request
 	M      Message      // represents the actual output from a connection (Arduino: sensor values/Algo: next move)
 	Result chan Message // channel with the finalized message to send back to the respective channels (Arduino: next move/Algo: sensor values)
+	Header
 }
 
 // Kind represents the kind of channel
 type Kind int
+
+// Header represents the possible situations we could encounter
+type Header byte
 
 // HeaderLength is the length of the header packet; rest of buffer is content
 const HeaderLength = 10
@@ -27,4 +31,14 @@ const (
 	Arduino
 	// Android ...
 	Android
+)
+
+// packet headers
+const (
+	Move Header = iota
+	FastestPath
+	FastestPathStart
+	ExplorationStart
+	SetWaypoint
+	Calibration
 )

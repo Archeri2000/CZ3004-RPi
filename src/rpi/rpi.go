@@ -42,6 +42,14 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 
 // AndroidHandler handles incoming misc messages from arduino conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
+	switch r.Header {
+	// implicit assumption to do calibration
+	case message.ExplorationStart:
+
+	case message.SetWaypoint:
+	case message.FastestPathStart:
+	}
+
 	androidBytes := r.M.Buf.Bytes()
 	androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
 	os.Stdout.Write(androidBytes)
