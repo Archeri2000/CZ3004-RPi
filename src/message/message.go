@@ -40,5 +40,6 @@ const (
 	FastestPathStart
 	ExplorationStart
 	SetWaypoint
+	Sensor
 	Calibration
 )

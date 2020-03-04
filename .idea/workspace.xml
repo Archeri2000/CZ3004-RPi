@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a8eb18ab-e082-4222-8d57-06a768a8a805" name="Default Changelist" comment="gorun4">
+    <list default="true" id="a8eb18ab-e082-4222-8d57-06a768a8a805" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connection/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/connection/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rpi/rpi.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/rpi/rpi.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/message/message.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/message/message.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,8 +235,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Go Build.go build connection.go" />
       <item itemvalue="Go Build.go build main.go" />
+      <item itemvalue="Go Build.go build connection.go" />
       <item itemvalue="Go Build.go build message.go" />
     </list>
     <recent_temporary>
@@ -293,7 +292,8 @@
     <MESSAGE value="built" />
     <MESSAGE value="added print message for fd" />
     <MESSAGE value="gorun4" />
-    <option name="LAST_COMMIT_MESSAGE" value="gorun4" />
+    <MESSAGE value="Added to algohandler" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added to algohandler" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
@@ -336,10 +336,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="491" y="50" key="#go_build_rpi_main.go/0.0.1536.824@0.0.1536.824" timestamp="1583219294886" />
-    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583295770315">
+    <state x="357" y="0" key="CommitChangelistDialog2" timestamp="1583295798372">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583295770315" />
+    <state x="357" y="0" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1583295798372" />
     <state x="503" y="161" key="EnvironmentVariablesDialog" timestamp="1583219809703">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -372,18 +372,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="56" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583219380948" />
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583295777311">
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2" timestamp="1583295803485">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583295777311" />
+    <state x="361" y="142" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1583295803485" />
     <state x="444" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1581642100503">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="444" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1581642100503" />
-    <state x="577" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583293254155">
+    <state x="577" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583301425631">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="577" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1583293254155" />
+    <state x="577" y="325" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1583301425631" />
     <state x="452" y="128" width="682" height="568" key="find.popup" timestamp="1583215325973">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
