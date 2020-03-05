@@ -56,6 +56,12 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		arduinoBytes = append([]byte(strconv.Itoa(int(message.Calibration))), arduinoBytes...)
 		arduinoMessage := message.Message{bytes.NewBuffer(arduinoBytes)}
 		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+	case message.FastestPathStart:
+		<-rpi.toAndroid
+		arduinoBytes := []byte{'\n'}
+		arduinoBytes = append([]byte(strconv.Itoa(int(message.FastestPathStart))), arduinoBytes...)
+		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
+		rpi.outgoingReceivers[message.Arduino](arduinoMessage) // only fp start routes to ardu
 	}
 	close(r.Result)
 }
