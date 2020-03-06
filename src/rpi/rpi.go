@@ -41,7 +41,8 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		// Split for android
 		// assumption - algo adds the pipe separator
 		androidBytes := r.M.Buf.Bytes()
-		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
+		//TODO change back
+		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes[:len(androidBytes)-1])}
 		rpi.outgoingReceivers[message.Android](androidMessage)
 		r.Result <- <-rpi.toAlgo
 	case message.FastestPath:

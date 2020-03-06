@@ -78,7 +78,7 @@ func listenOn(c *connection.Connection) {
 	buf := bytes.Buffer{}
 	reader := bufio.NewReader(c)
 	for {
-		fmt.Printf("%s\n", strconv.Itoa(int(c.Kind)))
+		fmt.Printf("Channel %s\n", strconv.Itoa(int(c.Kind)))
 		r, e := reader.ReadString(ENDL)
 		buf.Write([]byte(r))
 		//fmt.Printf("%d\n", buf.Len())
