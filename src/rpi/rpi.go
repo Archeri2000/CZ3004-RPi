@@ -4,6 +4,7 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
+	"fmt"
 	"strconv"
 )
 
@@ -41,8 +42,7 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		// Split for android
 		// assumption - algo adds the pipe separator
 		androidBytes := r.M.Buf.Bytes()
-		//TODO change back
-		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes[:len(androidBytes)-1])}
+		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
 		rpi.outgoingReceivers[message.Android](androidMessage)
 		r.Result <- <-rpi.toAlgo
 	case message.FastestPath:
@@ -69,6 +69,7 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 
 // AndroidHandler handles incoming misc messages from android conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
+	fmt.Printf("Android header: %c\n", r.Header)
 	// append \n to exploration/setwaypoint
 	switch r.Header {
 	// implicit assumption to do calibration

@@ -38,15 +38,24 @@ func main() {
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
 
-	Andr := connection.NewAndroid(rpi.Requests)
+	//Andr := connection.NewAndroid(rpi.Requests)
+	Andr := connection.Connection{&connection.MockConn{"2345\n", false, "android"}, rpi.Requests, message.Android}
+	fmt.Printf("Android Connected!\n")
 	Ardu := connection.NewArduino("/dev/ttyACM0", 115200, rpi.Requests)
+	fmt.Printf("Arduino Connected!\n")
 	Algo := connection.NewAlgo(rpi.Requests)
+	fmt.Printf("Algo Connected!\n")
 
 	rpi.RegisterReceivers(Andr.Receive, message.Android)
 	rpi.RegisterReceivers(Ardu.Receive, message.Arduino)
 	rpi.RegisterReceivers(Algo.Receive, message.Algo)
-	fmt.Printf("Success!")
-	go listenOn(Andr)
+	fmt.Printf("Success!\n")
+	//TEmp testing
+	algoBytes := []byte{'\n'}
+	algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
+	algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
+	_, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
+	go listenOn(&Andr)
 	go listenOn(Algo)
 	go listenOn(Ardu)
 	for i := range rpi.Requests {
@@ -78,8 +87,8 @@ func listenOn(c *connection.Connection) {
 	buf := bytes.Buffer{}
 	reader := bufio.NewReader(c)
 	for {
-		fmt.Printf("Channel %s\n", strconv.Itoa(int(c.Kind)))
 		r, e := reader.ReadString(ENDL)
+		fmt.Printf("Channel %s: (%s)\n", strconv.Itoa(int(c.Kind)), r)
 		buf.Write([]byte(r))
 		//fmt.Printf("%d\n", buf.Len())
 		//fmt.Printf("%d\n", buf.Len())

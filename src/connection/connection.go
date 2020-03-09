@@ -3,6 +3,7 @@ package connection
 import (
 	"CZ3004-RPi/src/message"
 	"bytes"
+	"fmt"
 	"io"
 	"strconv"
 )
@@ -28,7 +29,8 @@ func (conn *Connection) Send(b []byte) (n int, e error) {
 	// check if a.toRPi is nil
 	// wrap data
 	m := message.Message{Buf: bytes.NewBuffer(b[1:])}
-	head, _ := strconv.Atoi(string(b[0]))
+	head, _ := strconv.Atoi(string(string(b)[0]))
+	fmt.Printf("Header byte: %d\n", head)
 	r := message.Request{Kind: conn.Kind, M: m, Result: make(chan message.Message), Header: message.Header(head)} // don't initialise the result channel
 	conn.ToRPi <- r
 	temp, ok := <-r.Result

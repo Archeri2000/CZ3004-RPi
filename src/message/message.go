@@ -19,7 +19,7 @@ type Request struct {
 type Kind int
 
 // Header represents the possible situations we could encounter
-type Header byte
+type Header int
 
 // HeaderLength is the length of the header packet; rest of buffer is content
 const HeaderLength = 10
