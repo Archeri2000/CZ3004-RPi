@@ -5,9 +5,6 @@ import (
 	"net"
 )
 
-// byte offset at which we have to split into algo/arduino
-const offset = 10
-
 // AlgoConnection ...
 // NewAlgo ...
 func NewAlgo(c chan message.Request) *Connection {

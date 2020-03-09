@@ -4,7 +4,6 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
-	"fmt"
 	"strconv"
 )
 
@@ -69,7 +68,6 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 
 // AndroidHandler handles incoming misc messages from android conn
 func (rpi *RPi) AndroidHandler(r message.Request) {
-	fmt.Printf("Android header: %c\n", r.Header)
 	// append \n to exploration/setwaypoint
 	switch r.Header {
 	// implicit assumption to do calibration
