@@ -38,6 +38,7 @@ func main() {
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
 
+	//TODO: Revert to real android
 	//Andr := connection.NewAndroid(rpi.Requests)
 	Andr := connection.Connection{&connection.MockConn{"2345\n", false, "android"}, rpi.Requests, message.Android}
 	fmt.Printf("Android Connected!\n")
@@ -50,11 +51,16 @@ func main() {
 	rpi.RegisterReceivers(Ardu.Receive, message.Arduino)
 	rpi.RegisterReceivers(Algo.Receive, message.Algo)
 	fmt.Printf("Success!\n")
-	//TEmp testing
+	//TODO: Remove as android is supposed to provide this signal
 	algoBytes := []byte{'\n'}
 	algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
 	algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
 	_, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
+	algoBytes2 := []byte{'\n'}
+	algoBytes2 = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes2...)
+	algoMessage2 := message.Message{Buf: bytes.NewBuffer(algoBytes2)}
+	_, _ = Algo.Receive(algoMessage2) // exploration start + waypoint start routes to algo
+
 	go listenOn(&Andr)
 	go listenOn(Algo)
 	go listenOn(Ardu)
@@ -62,25 +68,21 @@ func main() {
 		rpi.Get(i)
 	}
 	os.Exit(0)
-	/*
-		AlgoConn := connection.NewAlgo(rpi.Requests)
-		AndroidConn := connection.NewAndroid(rpi.Requests)
-		ArduinoConn, _ := connection.NewArduino("8080", 8, rpi.Requests)
-	*/
-	MockAlgo := connection.Connection{&connection.MockConn{"stest\n", true, "algo"}, rpi.Requests, message.Algo}
-	MockAndroid := connection.Connection{&connection.MockConn{"2345\n", true, "android"}, rpi.Requests, message.Android}
-	MockArduino := connection.Connection{&connection.MockConn{"3456\n", true, "arduino"}, rpi.Requests, message.Arduino}
-
-	rpi.RegisterReceivers(MockAlgo.Receive, message.Algo)
-	rpi.RegisterReceivers(MockAndroid.Receive, message.Android)
-	rpi.RegisterReceivers(MockArduino.Receive, message.Arduino)
-
-	go listenOn(&MockAlgo)
-	go listenOn(&MockArduino)
-	go listenOn(&MockAndroid)
-	for i := range rpi.Requests {
-		rpi.Get(i)
-	}
+	//
+	//MockAlgo := connection.Connection{&connection.MockConn{"stest\n", true, "algo"}, rpi.Requests, message.Algo}
+	//MockAndroid := connection.Connection{&connection.MockConn{"2345\n", true, "android"}, rpi.Requests, message.Android}
+	//MockArduino := connection.Connection{&connection.MockConn{"3456\n", true, "arduino"}, rpi.Requests, message.Arduino}
+	//
+	//rpi.RegisterReceivers(MockAlgo.Receive, message.Algo)
+	//rpi.RegisterReceivers(MockAndroid.Receive, message.Android)
+	//rpi.RegisterReceivers(MockArduino.Receive, message.Arduino)
+	//
+	//go listenOn(&MockAlgo)
+	//go listenOn(&MockArduino)
+	//go listenOn(&MockAndroid)
+	//for i := range rpi.Requests {
+	//	rpi.Get(i)
+	//}
 }
 
 func listenOn(c *connection.Connection) {
