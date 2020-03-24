@@ -4,6 +4,8 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
+	"encoding/json"
+	"os/exec"
 	"strconv"
 )
 
@@ -120,4 +122,19 @@ func (rpi *RPi) RegisterReceivers(r handler.Receiver, m message.Kind) {
 // NewRPi returns a new RPi
 func NewRPi() (rpi *RPi) {
 	return &RPi{Requests: make(chan message.Request), toAlgo: make(chan message.Message), toAndroid: make(chan message.Message), toArduino: make(chan message.Message), incomingHandlers: make(map[message.Kind]handler.Handler), outgoingReceivers: make(map[message.Kind]handler.Receiver)}
+}
+
+func getImageRec(o, x, y int) map[string]bool {
+	// translate orientation to actual ints
+	cmd := exec.Command("python", "cmd goes here", strconv.Itoa(o), strconv.Itoa(x), strconv.Itoa(y))
+	output, err := cmd.Output()
+	if err != nil {
+		println(err) // bad handling but who cares
+	}
+	jsonMap := make(map[string]bool)
+	err = json.Unmarshal([]byte(output), &jsonMap)
+	if err != nil {
+		panic(err)
+	}
+	return jsonMap
 }

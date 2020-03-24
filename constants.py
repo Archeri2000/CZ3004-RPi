@@ -1,0 +1,4 @@
+CAMERA_WIDTH = 128
+CAMERA_HEIGHT = 128 
+
+HOST, PORT = "localhost", 1234
