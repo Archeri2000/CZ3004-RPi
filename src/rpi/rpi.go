@@ -109,7 +109,9 @@ func (rpi *RPi) ArduinoHandler(r message.Request) {
 	var left byte
 	leftShort, _ := r.M.Buf.ReadByte()
 	leftLong, _ := r.M.Buf.ReadByte()
-	if leftLong == discard {
+	if leftLong == leftShort {
+		left = leftLong
+	} else if leftLong == discard {
 		if leftShort == discard {
 			left = discard
 		} else {
