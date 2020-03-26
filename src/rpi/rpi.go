@@ -4,8 +4,6 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
-	"encoding/json"
-	"os/exec"
 	"strconv"
 )
 
@@ -40,6 +38,9 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		arduinoBytes = append([]byte(strconv.Itoa(int(message.Move))), arduinoBytes...)
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
 		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+		// TODO: fill in (o , x, y for image rec message)
+		imageRecMessage := 1
+		rpi.outgoingReceivers[message.Image](imageRecMessage)
 		// Split for android
 		// assumption - algo adds the pipe separator
 		androidBytes := r.M.Buf.Bytes()
@@ -109,6 +110,13 @@ func (rpi *RPi) ArduinoHandler(r message.Request) {
 	close(r.Result)
 }
 
+func (rpi *RPi) ImageHandler(r message.Request) {
+	// incoming message from imagerec model
+	// represents a result - forward to android handler
+	prediction := r.M
+	rpi.outgoingReceivers[message.Android](prediction)
+}
+
 // RegisterHandler registers a given handler to the internal handler hashmap of rpi
 func (rpi *RPi) RegisterHandler(h handler.Handler, m message.Kind) {
 	rpi.incomingHandlers[m] = h
@@ -122,19 +130,4 @@ func (rpi *RPi) RegisterReceivers(r handler.Receiver, m message.Kind) {
 // NewRPi returns a new RPi
 func NewRPi() (rpi *RPi) {
 	return &RPi{Requests: make(chan message.Request), toAlgo: make(chan message.Message), toAndroid: make(chan message.Message), toArduino: make(chan message.Message), incomingHandlers: make(map[message.Kind]handler.Handler), outgoingReceivers: make(map[message.Kind]handler.Receiver)}
-}
-
-func getImageRec(o, x, y int) map[string]bool {
-	// translate orientation to actual ints
-	cmd := exec.Command("python", "cmd goes here", strconv.Itoa(o), strconv.Itoa(x), strconv.Itoa(y))
-	output, err := cmd.Output()
-	if err != nil {
-		println(err) // bad handling but who cares
-	}
-	jsonMap := make(map[string]bool)
-	err = json.Unmarshal([]byte(output), &jsonMap)
-	if err != nil {
-		panic(err)
-	}
-	return jsonMap
 }
