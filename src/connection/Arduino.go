@@ -16,6 +16,7 @@ func NewArduino(port string, baud uint, toRPi chan message.Request) *Connection 
 		DataBits:        8,
 		StopBits:        1,
 		MinimumReadSize: 1,
+		ParityMode:      serial.PARITY_NONE,
 	}
 	for {
 		conn, err := serial.Open(options)

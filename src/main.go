@@ -52,14 +52,14 @@ func main() {
 	rpi.RegisterReceivers(Algo.Receive, message.Algo)
 	fmt.Printf("Success!\n")
 	//TODO: Remove as android is supposed to provide this signal
-	algoBytes := []byte{'\n'}
-	algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
-	algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
-	_, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
-	algoBytes2 := []byte{'\n'}
-	algoBytes2 = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes2...)
-	algoMessage2 := message.Message{Buf: bytes.NewBuffer(algoBytes2)}
-	_, _ = Algo.Receive(algoMessage2) // exploration start + waypoint start routes to algo
+	//algoBytes := []byte{'\n'}
+	//algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
+	//algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
+	//_, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
+	//algoBytes2 := []byte{'\n'}
+	//algoBytes2 = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes2...)
+	//algoMessage2 := message.Message{Buf: bytes.NewBuffer(algoBytes2)}
+	//_, _ = Algo.Receive(algoMessage2) // exploration start + waypoint start routes to algo
 
 	go listenOn(Andr)
 	go listenOn(Algo)

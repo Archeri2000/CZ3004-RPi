@@ -4,6 +4,7 @@ import (
 	"CZ3004-RPi/src/handler"
 	"CZ3004-RPi/src/message"
 	"bytes"
+	"fmt"
 	"strconv"
 )
 
@@ -20,6 +21,7 @@ type RPi struct {
 
 const offset = 1 // byte offset between ard/android message
 const discard = 'x'
+const errorValue = 'e'
 
 // Get is a abstraction of a client submitting a request to rpi
 // this just calls the handler
@@ -35,21 +37,28 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		// Split for ardu
 		arduinoBytes := make([]byte, offset)
 		r.M.Buf.Read(arduinoBytes)
+		fmt.Printf("Arduino bytes: %c\n", arduinoBytes[0])
 		arduinoBytes = append([]byte(strconv.Itoa(int(message.Move))), arduinoBytes...)
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
-		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+		_, e1 := rpi.outgoingReceivers[message.Arduino](arduinoMessage)
+		if e1 != nil {
+			fmt.Printf("Move (ArduinoSend) Error: %s\n", e1)
+		}
 		// Split for android
 		// assumption - algo adds the pipe separator
 		androidBytes := r.M.Buf.Bytes()
 		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
-		rpi.outgoingReceivers[message.Android](androidMessage)
+		_, e2 := rpi.outgoingReceivers[message.Android](androidMessage)
+		if e2 != nil {
+			fmt.Printf("Move (AndroidSend) Error: %s\n", e2)
+		}
 		r.Result <- <-rpi.toAlgo
 	case message.FastestPath:
 		fastestPath := r.M.Buf.Bytes()                                                       // grab byte array representing moves
 		fastestPath = append([]byte(strconv.Itoa(int(message.FastestPath))), fastestPath...) // assumption - moves can be broken into bytes
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(fastestPath)}
 		rpi.outgoingReceivers[message.Arduino](arduinoMessage)
-		rpi.toAndroid <- message.Message{&bytes.Buffer{}}
+		rpi.toAndroid <- message.Message{Buf: &bytes.Buffer{}}
 	case message.Calibration:
 		// request from algo for calibration - route to arduino
 		arduinoBytes := r.M.Buf.Bytes()
@@ -76,7 +85,10 @@ func (rpi *RPi) AndroidHandler(r message.Request) {
 		arduinoBytes := []byte{'\n'}
 		arduinoBytes = append([]byte(strconv.Itoa(int(message.FastestPathStart))), arduinoBytes...)
 		arduinoMessage := message.Message{Buf: bytes.NewBuffer(arduinoBytes)}
-		rpi.outgoingReceivers[message.Arduino](arduinoMessage) // only fp start routes to ardu
+		_, e := rpi.outgoingReceivers[message.Arduino](arduinoMessage) // only fp start routes to ardu
+		if e != nil {
+			fmt.Printf("FastestPathStart Error: %s", e)
+		}
 	case message.ExplorationStart:
 		algoBytes := []byte{'\n'}
 		algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
@@ -94,9 +106,21 @@ func (rpi *RPi) AndroidHandler(r message.Request) {
 // ArduinoHandler handles incoming sensor input from arduino conn
 func (rpi *RPi) ArduinoHandler(r message.Request) {
 	// format data here
-	left, _ := r.M.Buf.ReadByte()
-	if leftLong, _ := r.M.Buf.ReadByte(); leftLong != discard {
-		left = leftLong
+	var left byte
+	leftShort, _ := r.M.Buf.ReadByte()
+	leftLong, _ := r.M.Buf.ReadByte()
+	if leftLong == discard {
+		if leftShort == discard {
+			left = discard
+		} else {
+			left = leftShort
+		}
+	} else {
+		if leftShort == discard {
+			left = leftLong
+		} else {
+			left = errorValue
+		}
 	}
 	algoBytes := append([]byte(strconv.Itoa(int(message.Sensor))), left)
 	algoBytes = append(algoBytes, r.M.Buf.Bytes()...)
