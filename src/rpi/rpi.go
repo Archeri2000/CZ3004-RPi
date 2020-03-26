@@ -94,13 +94,11 @@ func (rpi *RPi) AndroidHandler(r message.Request) {
 // ArduinoHandler handles incoming sensor input from arduino conn
 func (rpi *RPi) ArduinoHandler(r message.Request) {
 	// format data here
-	var leftShort byte
-	if leftShort, _ = r.M.Buf.ReadByte(); leftShort == discard {
-		leftShort, _ = r.M.Buf.ReadByte()
-	} else {
-		_, _ = r.M.Buf.ReadByte()
+	left, _ := r.M.Buf.ReadByte()
+	if leftLong, _ := r.M.Buf.ReadByte(); leftLong != discard {
+		left = leftLong
 	}
-	algoBytes := append([]byte(strconv.Itoa(int(message.Sensor))), leftShort)
+	algoBytes := append([]byte(strconv.Itoa(int(message.Sensor))), left)
 	algoBytes = append(algoBytes, r.M.Buf.Bytes()...)
 	algoMessage := message.Message{bytes.NewBuffer(algoBytes)}
 	rpi.toAlgo <- algoMessage // new message with formatted data not r.m

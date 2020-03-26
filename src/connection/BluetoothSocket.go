@@ -17,10 +17,11 @@ func NewBluetoothSocket(sockAddr Sockaddr, nfr int) *BluetoothSocket {
 
 }
 
+// Possibly add reconnection code here
 func (sock *BluetoothSocket) Read(p []byte) (n int, e error) {
 	n, e = Read(sock.nfr, p)
 	if e != nil {
-		fmt.Printf("n: %d, e: %s", n, e)
+		fmt.Printf("n: %d, e: %s\n", n, e)
 	}
 	return n, e
 }
