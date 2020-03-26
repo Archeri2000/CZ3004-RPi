@@ -10,9 +10,9 @@ import (
 
 // Connection is a struct representing the possible connection force clients to implement a connection interface; send/rx is for multiplexing with other goroutines
 type Connection struct {
-	io.ReadWriteCloser                      // represents the bytestream
-	ToRPi              chan message.Request // messages from algo to rpi
-	Kind               message.Kind
+	io.ReadWriter                      // represents the bytestream
+	ToRPi         chan message.Request // messages from algo to rpi
+	Kind          message.Kind
 }
 
 // Receive an outgoing message from rpi and send to conn without expecting reply
