@@ -31,6 +31,8 @@ const (
 	Arduino
 	// Android ...
 	Android
+	// Image ...
+	Image
 )
 
 // packet headers
@@ -42,4 +44,5 @@ const (
 	SetWaypoint
 	Sensor
 	Calibration
+	ImageRec
 )

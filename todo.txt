@@ -1,0 +1,3 @@
+# TODO: add handler/receiver for image rec
+# TODO: add python script to call the entry point (main.py)
+# TODO: ^ -> add image capture 

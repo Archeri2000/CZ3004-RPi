@@ -37,6 +37,8 @@ func main() {
 	rpi.RegisterHandler(AndroidH, message.Android)
 	ArduinoH := handler.Handler(rpi.ArduinoHandler)
 	rpi.RegisterHandler(ArduinoH, message.Arduino)
+	ImageH := handler.Handler(rpi.ImageHandler)
+	rpi.RegisterHandler(ImageH, message.Image)
 
 	//TODO: Revert to real android
 	Andr := connection.NewAndroid(rpi.Requests)
@@ -46,24 +48,27 @@ func main() {
 	fmt.Printf("Arduino Connected!\n")
 	Algo := connection.NewAlgo(rpi.Requests)
 	fmt.Printf("Algo Connected!\n")
+	Image := connection.NewImage(rpi.Requests)
 
 	rpi.RegisterReceivers(Andr.Receive, message.Android)
 	rpi.RegisterReceivers(Ardu.Receive, message.Arduino)
 	rpi.RegisterReceivers(Algo.Receive, message.Algo)
+	rpi.RegisterReceivers(handler.Receiver(Image.ImgReceive), message.Image)
 	fmt.Printf("Success!\n")
 	//TODO: Remove as android is supposed to provide this signal
-	algoBytes := []byte{'\n'}
-	algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
-	algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
-	_, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
-	algoBytes2 := []byte{'\n'}
-	algoBytes2 = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes2...)
-	algoMessage2 := message.Message{Buf: bytes.NewBuffer(algoBytes2)}
-	_, _ = Algo.Receive(algoMessage2) // exploration start + waypoint start routes to algo
+	// algoBytes := []byte{'\n'}
+	// algoBytes = append([]byte(strconv.Itoa(int(message.ExplorationStart))), algoBytes...)
+	// algoMessage := message.Message{Buf: bytes.NewBuffer(algoBytes)}
+	// _, _ = Algo.Receive(algoMessage) // exploration start + waypoint start routes to algo
+	// algoBytes2 := []byte{'\n'}
+	// algoBytes2 = append([]byte(strconv.Itoa(int(message.FastestPathStart))), algoBytes2...)
+	// algoMessage2 := message.Message{Buf: bytes.NewBuffer(algoBytes2)}
+	// _, _ = Algo.Receive(algoMessage2) // exploration start + waypoint start routes to algo
 
 	go listenOn(Andr)
 	go listenOn(Algo)
 	go listenOn(Ardu)
+	go listenOn(Image)
 	for i := range rpi.Requests {
 		rpi.Get(i)
 	}

@@ -43,6 +43,10 @@ func (rpi *RPi) AlgoHandler(r message.Request) {
 		androidBytes := r.M.Buf.Bytes()
 		androidMessage := message.Message{Buf: bytes.NewBuffer(androidBytes)}
 		rpi.outgoingReceivers[message.Android](androidMessage)
+		imageRecBytes := []byte{androidBytes[5]}
+		imageRecBytes = append(imageRecBytes, androidBytes[0:4]...)
+		imageRecMessage := message.Message{bytes.NewBuffer(imageRecBytes)}
+		rpi.outgoingReceivers[message.Image](imageRecMessage)
 		r.Result <- <-rpi.toAlgo
 	case message.FastestPath:
 		fastestPath := r.M.Buf.Bytes()                                                       // grab byte array representing moves
@@ -103,6 +107,13 @@ func (rpi *RPi) ArduinoHandler(r message.Request) {
 	algoMessage := message.Message{bytes.NewBuffer(algoBytes)}
 	rpi.toAlgo <- algoMessage // new message with formatted data not r.m
 	close(r.Result)
+}
+
+func (rpi *RPi) ImageHandler(r message.Request) {
+	// incoming message from imagerec model
+	// represents a result - forward to android handler
+	prediction := r.M
+	rpi.outgoingReceivers[message.Android](prediction)
 }
 
 // RegisterHandler registers a given handler to the internal handler hashmap of rpi
